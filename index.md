@@ -1,3 +1,8 @@
+---
+layout: post
+title: How I build EA4 RPMs
+---
+
 # Building packages for EasyApache 4 with Open Build Service
 This will house documentation on EasyApache 4 and how I build packages using it.
 
