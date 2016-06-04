@@ -10,10 +10,10 @@ This will house documentation on EasyApache 4 and how I build packages using it.
 * Make an OBS account at: https://build.opensuse.org/
 * Create a new subproject under your Home Project.
   * In my example, I named it 'symlink_patch'
-* Add the EA4 repository with 'isv:cpanel:EA4'
+* Add two repositories to your project that link to CentOS 6 and CentOS 7 from the EA4 repository at 'isv:cpanel:EA4'
   * This ensures that any dependencies your packages need from EA4, it will be able to find them.
   * Any packages required from CentOS upstream are already set in EA4, and are inherited to your project from 'isv:cpanel:EA4'
-* Add package to OBS
+* Add package metadata to OBS
   * In my example of building the symlink_patch packages, I needed to fork two packaegs (ea-apache2 and ea-apr).
   * I created two packages in my OBS project named 'symlink_patch' named 'ea-apache2' and 'ea-apr'
 * Install required RPM build tools to interact with rpmbuild and OBS
@@ -25,10 +25,17 @@ This will house documentation on EasyApache 4 and how I build packages using it.
   * git checkout -b symlink-patch
   * Revert makefile change
 * Adjust Makefile to suit your needs
-  * +OBS_PROJECT := Jperkster
-  * +OBS_USERNAME := $(shell grep -A5 '[https://api.opensuse.org]' ~/.oscrc | awk -F= '/user=/ {print $$2}')
-  * +BUILD_TARGET := home$(OBS_USERNAME):$(OBS_PROJECT):$(GIT_BRANCH)
+  * cPanel uses an internal Makefile that's not available publicly. It's best to revert the Makefile to the previous SHA
+    * ```git revert $sha```
+  * After the reversion, adjust the Makefile in a few places:
+    * +OBS_PROJECT := Jperkster
+    * +OBS_USERNAME := $(shell grep -A5 '[https://api.opensuse.org]' ~/.oscrc | awk -F= '/user=/ {print $$2}')
+    * +BUILD_TARGET := home$(OBS_USERNAME):$(OBS_PROJECT):$(GIT_BRANCH)
 * Send initial builds to OBS to make sure everything is a-okay
-* Make changes to git repo
-* make local ; Watch for any problems
-* make obs
+  * ```make obs```
+* Make any changes you require
+  * I had to add a patch to the SOURCES directory, and I told the .spec file to add my patch during compilation
+* I like to verify I didn't screw anything up first by building the package locally on my machine:
+  * ```make local```
+* If your packages build locally, send them to OBS.
+  * ```make obs```
