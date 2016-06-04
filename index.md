@@ -17,10 +17,9 @@ This will house documentation on EasyApache 4 and how I build packages using it.
 * git checkout -b symlink-patch
 * Revert makefile change
 * Adjust Makefile to suit your needs
-    - +OBS_PROJECT := Jperkster
-    - +OBS_USERNAME := $(shell grep -A5 '[https://api.opensuse.org]' ~/.oscrc | awk -F= '/user=/ {print $$2}')
-    - +BUILD_TARGET := home$(OBS_USERNAME):$(OBS_PROJECT):$(GIT_BRANCH)
-
+  * +OBS_PROJECT := Jperkster
+  * +OBS_USERNAME := $(shell grep -A5 '[https://api.opensuse.org]' ~/.oscrc | awk -F= '/user=/ {print $$2}')
+  * +BUILD_TARGET := home$(OBS_USERNAME):$(OBS_PROJECT):$(GIT_BRANCH)
 * Send initial builds to OBS to make sure everything is a-okay
 * Make changes to git repo
 * make local ; Watch for any problems
